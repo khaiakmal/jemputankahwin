@@ -1,13 +1,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     
+    <!-- Permissions required for keyboard functionality -->
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-
+    
     <application
-        android:label="Custom Keyboard"
+        android:label="Flutter Keyboard IME"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:allowBackup="true">
         
+        <!-- Main Activity (Settings/Configuration) -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -27,8 +30,32 @@
             </intent-filter>
         </activity>
         
+        <!-- Keyboard Input Method Service -->
+        <service
+            android:name=".KeyboardService"
+            android:label="Flutter Keyboard"
+            android:permission="android.permission.BIND_INPUT_METHOD"
+            android:exported="true">
+            
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+            
+            <meta-data
+                android:name="android.view.im"
+                android:resource="@xml/input_method" />
+        </service>
+        
+        <!-- Flutter engine metadata -->
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
+    
+    <!-- Queries for package visibility (Android 11+) -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+        </intent>
+    </queries>
 </manifest>
